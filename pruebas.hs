@@ -1,6 +1,8 @@
-{-# LANGUAGE BlockArguments #-}
-
 import Solucion
+
+-- Para ejecutar hay que llamar a la función main de este archivo con ghci
+-- ghci pruebas 
+-- main
 
 persona1 :: Persona
 persona1 = (25, 2, "Evangelina", 101, ["Programación", "Diseño"])

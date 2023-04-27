@@ -1,0 +1,22 @@
+GHCi, version 9.2.7: https://www.haskell.org/ghc/  :? for help
+[1 of 2] Compiling Solucion         ( Solucion.hs, interpreted )
+[2 of 2] Compiling Main             ( pruebas.hs, interpreted )
+Ok, two modules loaded.
+"Ejercicio 1.a.1 2525"
+"Ejercicio 1.a.2 200"
+"Ejercicio 1.a.3 7"
+"Ejercicio 1.b.1 202"
+"Ejercicio 1.b.2 52"
+"Ejercicio 1.b.3 2"
+"Ejercicio 2.b.1 : Evangelina No tiene un nombre largo"
+"Ejercicio 2.b.2 : Maximiliano Tiene un nombre largo"
+"la persona es 3 No es suertuda"
+"la persona es 4 Es suertuda"
+"la persona 3 Tiene nombre comun"
+"la persona 4 Tiene nombre lindo"
+"(28,35,\"Daniel\",12250,[\"dormir\",\"dibujar\",\"arquitectura\"])"
+"(29,35,\"Daniel\",550,[\"dormir\",\"dibujar\"])"
+"(28,35,\"Daniel\",350,[\"dormir\",\"dibujar\"])"
+"(28,35,\"Daniel\",250,[\"dormir\",\"dibujar\"])"
+"(29,35,\"Daniel\",8550,[\"dormir\",\"dibujar\",\"Medicina\"])"
+Leaving GHCi.
