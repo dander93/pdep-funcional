@@ -1,3 +1,5 @@
+module Solucion where
+
 type Persona = (Int, Int, String, Int, [String])
 
 obtenerEdad :: Persona -> Int
