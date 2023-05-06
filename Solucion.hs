@@ -27,11 +27,18 @@ felicidoniosBajos = 50
 -- Punto 1 - a
 --
 
+tieneFelicidoniosMedios :: Persona -> Bool
+tieneFelicidoniosMedios persona = ((> felicidoniosBajos) . obtenerFelicidonios) persona && ((<= felicidoniosAltos) . obtenerFelicidonios) persona
+
 obtenerCoeficienteSatisfaccion :: Persona -> Int
 obtenerCoeficienteSatisfaccion persona
-  | obtenerFelicidonios persona > felicidoniosAltos = obtenerFelicidonios persona * obtenerEdad persona
-  | obtenerFelicidonios persona <= felicidoniosAltos && obtenerFelicidonios persona > felicidoniosBajos = obtenerSuenios persona * obtenerFelicidonios persona
+  | esMuyFeliz = felicidoniosPor (obtenerEdad persona)
+  | esMedianamenteFeliz = felicidoniosPor (obtenerSuenios persona)
   | otherwise = obtenerFelicidonios persona `div` 2
+  where
+    esMuyFeliz = ((> felicidoniosAltos) . obtenerFelicidonios) persona
+    esMedianamenteFeliz = tieneFelicidoniosMedios persona
+    felicidoniosPor = (* obtenerFelicidonios persona)
 
 --
 -- Punto 1 - b
@@ -39,9 +46,13 @@ obtenerCoeficienteSatisfaccion persona
 
 obtenerAmbicion :: Persona -> Int
 obtenerAmbicion persona
-  | obtenerFelicidonios persona > felicidoniosAltos = obtenerFelicidonios persona * obtenerSuenios persona
-  | obtenerFelicidonios persona <= felicidoniosAltos && obtenerFelicidonios persona > felicidoniosBajos = obtenerEdad persona * obtenerSuenios persona
-  | otherwise = obtenerSuenios persona * 2
+  | esMuyAmbiciosa = sueniosPor (obtenerFelicidonios persona)
+  | esMedianamenteAmbiciosa = sueniosPor (obtenerEdad persona)
+  | otherwise = sueniosPor 2
+  where
+    esMuyAmbiciosa = ((> felicidoniosAltos) . obtenerFelicidonios) persona
+    esMedianamenteAmbiciosa = tieneFelicidoniosMedios persona
+    sueniosPor = (* obtenerSuenios persona)
 
 --
 -- Punto 2 - a
@@ -75,7 +86,9 @@ tieneNombreLindo persona
 -- Punto 3 - a
 --
 
-serMasFeliz :: Int -> Persona -> Persona
+type Suenio = Persona -> Persona
+
+serMasFeliz :: Int -> Suenio
 serMasFeliz cuanto persona =
   ( obtenerEdad persona,
     obtenerSuenios persona,
@@ -91,7 +104,7 @@ recibirseCarreraCalcularFelicidonios :: String -> Int
 recibirseCarreraCalcularFelicidonios = (* multiplicadorRecibirseCarrera) . length
 
 -- se concatena la lista de carreras existente con una lista de una única carrera (input)
-recibirseCarreraAgregarHabilidad :: String -> Persona -> Persona
+recibirseCarreraAgregarHabilidad :: String -> Suenio
 recibirseCarreraAgregarHabilidad carrera persona =
   ( obtenerEdad persona,
     obtenerSuenios persona,
@@ -100,7 +113,7 @@ recibirseCarreraAgregarHabilidad carrera persona =
     obtenerHabilidades persona ++ [carrera]
   )
 
-recibirseCarrera :: String -> Persona -> Persona
+recibirseCarrera :: String -> Suenio
 recibirseCarrera carrera = recibirseCarreraAgregarHabilidad carrera . serMasFeliz (recibirseCarreraCalcularFelicidonios carrera)
 
 cumplirAnios :: Persona -> Persona
@@ -118,14 +131,14 @@ multiplicadorFelicidoniosViajarListaCiudades = 100
 viajarListaCiudadesCalcularFelicidonios :: [String] -> Int
 viajarListaCiudadesCalcularFelicidonios = (* multiplicadorFelicidoniosViajarListaCiudades) . length
 
-viajarListaCiudades :: [String] -> Persona -> Persona
+viajarListaCiudades :: [String] -> Suenio
 viajarListaCiudades listaCiudades = cumplirAnios . serMasFeliz (viajarListaCiudadesCalcularFelicidonios listaCiudades)
 
-enamorarseOtraPersona :: Persona -> Persona -> Persona
+enamorarseOtraPersona :: Persona -> Suenio
 enamorarseOtraPersona persona otraPersona = serMasFeliz (obtenerFelicidonios otraPersona) persona
 
-queTodoSigaIgual :: Persona -> Persona
-queTodoSigaIgual persona = persona
+queTodoSigaIgual :: Suenio
+queTodoSigaIgual = id
 
 comboPerfectoPremio :: Int
 comboPerfectoPremio = 100
@@ -136,5 +149,5 @@ comboPerfectoCiudades = ["Berazategui", "Paris"]
 comboPerfectoCarrera :: String
 comboPerfectoCarrera = "Medicina"
 
-comboPerfecto :: Persona -> Persona
+comboPerfecto :: Suenio
 comboPerfecto = serMasFeliz comboPerfectoPremio . (viajarListaCiudades comboPerfectoCiudades . recibirseCarrera comboPerfectoCarrera)
